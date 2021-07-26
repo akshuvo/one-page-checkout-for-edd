@@ -28,7 +28,9 @@
                 		jQuery('select#edd-gateway, input.edd-gateway').trigger('change');
 
                 		// init on document.ready
-						window.jQuery(document).ready(EDD_Checkout.init);
+                		if ( (typeof(EDD_Checkout) !== "undefined") ) {
+							window.jQuery(document).ready(EDD_Checkout.init);
+						}
                 	}
                 },
     			error: function(data){
@@ -85,7 +87,9 @@
                 		jQuery('select#edd-gateway, input.edd-gateway').trigger('change');
 
                 		// init on document.ready
-						window.jQuery(document).ready(EDD_Checkout.init);
+                		if ( (typeof(EDD_Checkout) !== "undefined") ) {
+							window.jQuery(document).ready(EDD_Checkout.init);
+						}
 
                 	}
                 },

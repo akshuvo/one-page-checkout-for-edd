@@ -28,6 +28,8 @@ if( !function_exists( 'one_page_checkout_for_edd_layout_function' ) ){
             </div>
         </div>
 
+        <div class="opcfedd-backdrop-shadow"></div>
+
         <?php if( $opcfedd_opt['cart-position'] == 1 ) : ?>
             <div id="eddnstant-sticky-cart" class="eddnstant-sticky-cart eddnstant-cart-shake eddnstant-sticky-cart-right">
                 <span class="eddnstant-icon-cart"><?php one_page_checkout_for_edd_svg_icon('shopping_basket'); ?></span>

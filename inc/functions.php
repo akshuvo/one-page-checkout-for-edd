@@ -39,6 +39,7 @@ if( !function_exists( 'one_page_checkout_for_edd_get_checkout_uri' ) ){
 	}
 	add_filter( 'edd_get_checkout_uri', 'one_page_checkout_for_edd_get_checkout_uri', 15 );
 }
+remove_filter( 'the_title', 'edd_microdata_title', 10, 2 );
 
 
 if ( !function_exists('one_page_checkout_for_edd_checkout_layout') ) {
@@ -54,7 +55,7 @@ if ( !function_exists('one_page_checkout_for_edd_checkout_layout') ) {
 				edd_checkout_cart();
 
 				?>
-				<div class="cart_item edd_checkout"><a class="button" href="<?php echo edd_get_checkout_uri(); ?>"><?php _e( 'Checkout', 'easy-digital-downloads' ); ?></a></div>
+				<div class="opcfedd-checkout-button site"><a class="opcfedd-goto-checkout edd_go_to_checkout button edd-submit" href="<?php echo edd_get_checkout_uri(); ?>"><?php _e( 'Checkout', 'easy-digital-downloads' ); ?></a></div>
 				<?php
 			
 			else:
