@@ -23,7 +23,7 @@ One Page Checkout for EDD reduces the process of viewing cart items from the sam
 
 
 
-# Installation
+## Installation
 
 1. Download and unzip the plugin. Upload the unzipped folder to the wp-contents/plugins folder of your WordPress installation.
 2. Active the plugin from the WordPress Plugins administration page.
