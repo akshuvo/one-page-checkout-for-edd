@@ -55,7 +55,6 @@
             $('.eddnstant_cart_total').text( cart_quantity );
             jQuery(document).trigger('cart_shake');
 
-            console.log(e, response );
 
         });
 
