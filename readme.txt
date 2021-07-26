@@ -1,6 +1,5 @@
 === One Page Checkout for EDD ===
-Contributors: mdshuvo
-Donate link: 
+Contributors: mdshuvo, addonmaster
 Tags: cart popup for edd, instant checkout, one page purchase, checkout poppup, one page checkout, cart popup, fly cart, easy digital downloads, direct checkout for edd, quick purchase, purchase popup, edd one page checkout, edd one page purchase, same page purchase, same page checkout
 Tested up to: 5.8
 Stable tag: trunk
