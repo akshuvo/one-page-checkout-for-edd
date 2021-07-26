@@ -23,24 +23,11 @@ One Page Checkout for EDD reduces the process of viewing cart items from the sam
 
 
 
-== Frequently Asked Questions ==
+# Installation
 
-= A question that someone might have =
-
-An answer to that question.
-
-= What about foo bar? =
-
-Answer to foo bar dilemma.
-
-
-== Screenshots ==
-
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif).
-2. 
-
-== Changelog ==
-
-
-== Upgrade Notice ==
+1. Download and unzip the plugin. Upload the unzipped folder to the wp-contents/plugins folder of your WordPress installation.
+2. Active the plugin from the WordPress Plugins administration page.
+3. OR, Go to WP admin panel, click 'Plugins' -> 'Add new'. In the search input box, type 'One Page Checkout for EDD'.
+4. Install and activate the plugin.
+5. That's it. No other settings is necessary.
 

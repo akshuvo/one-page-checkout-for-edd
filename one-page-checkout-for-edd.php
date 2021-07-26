@@ -6,7 +6,7 @@
  * Description: Simply reduce the process of purchasing using One Page Checkout for Easy Digital Downloads. 
  * Author: AddonMaster
  * Author URI: https://addonmaster.com
- * Version: 1.0.6
+ * Version: 1.0.0
  * Text Domain: one_page_checkout_for_edd
  * Domain Path: /lang
  * EDD tested up to: 2.10.6
@@ -95,7 +95,8 @@ if ( ! class_exists( 'OnePageCheckoutForEDD' ) ) :
 		 * Enqueue Frontend Scripts
 		 */
 		function enqueue_scripts() {
-			$ver = current_time( 'timestamp' );
+			//$ver = current_time( 'timestamp' );
+			$ver = '1.0.0';
 
 		    wp_enqueue_style( 'one_page_checkout_for_edd', ONE_PAGE_CHECKOUT_FOR_EDD_PLUGIN_URL . 'assets/css/one_page_checkout_for_edd.css', null, $ver );
 
