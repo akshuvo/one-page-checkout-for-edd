@@ -1,91 +1,84 @@
 <?php
 
 // Add total qty filter
-function one_page_checkout_for_edd_ajax_cart_total_qty( $return ) {
+if( !function_exists( 'one_page_checkout_for_edd_ajax_cart_total_qty' ) ){
+	function one_page_checkout_for_edd_ajax_cart_total_qty( $return ) {
 
-	$return['total_qty'] = EDD()->cart->get_quantity();
-	return $return;
+		$return['total_qty'] = EDD()->cart->get_quantity();
+		return $return;
+	}
+	add_filter( 'edd_ajax_cart_item_quantity_response', 'one_page_checkout_for_edd_ajax_cart_total_qty' );
 }
-add_filter( 'edd_ajax_cart_item_quantity_response', 'one_page_checkout_for_edd_ajax_cart_total_qty' );
 
 /**
  * Get the URL of the Checkout page
  */
-function one_page_checkout_for_edd_get_checkout_uri( $uri ) {
-	$uri = false;
+if( !function_exists( 'one_page_checkout_for_edd_get_checkout_uri' ) ){
+	function one_page_checkout_for_edd_get_checkout_uri( $uri ) {
+		$uri = false;
 
-	// If we are not on a checkout page, determine the URI from the default.
-	if ( empty( $uri ) ) {
-		$uri = edd_get_option( 'purchase_page', false );
-		$uri = isset( $uri ) ? get_permalink( $uri ) : NULL;
+		// If we are not on a checkout page, determine the URI from the default.
+		if ( empty( $uri ) ) {
+			$uri = edd_get_option( 'purchase_page', false );
+			$uri = isset( $uri ) ? get_permalink( $uri ) : NULL;
+		}
+
+		$scheme = defined( 'FORCE_SSL_ADMIN' ) && FORCE_SSL_ADMIN ? 'https' : 'admin';
+
+		$ajax_url = admin_url( 'admin-ajax.php', $scheme );
+
+		if ( ( ! preg_match( '/^https/', $uri ) && preg_match( '/^https/', $ajax_url ) && edd_is_ajax_enabled() ) || edd_is_ssl_enforced() ) {
+			$uri = preg_replace( '/^http:/', 'https:', $uri );
+		}
+
+		if ( edd_get_option( 'no_cache_checkout', false ) ) {
+			$uri = edd_add_cache_busting( $uri );
+		}
+
+		return apply_filters( 'one_page_checkout_for_edd_get_checkout_uri', $uri );
 	}
-
-	$scheme = defined( 'FORCE_SSL_ADMIN' ) && FORCE_SSL_ADMIN ? 'https' : 'admin';
-
-	$ajax_url = admin_url( 'admin-ajax.php', $scheme );
-
-	if ( ( ! preg_match( '/^https/', $uri ) && preg_match( '/^https/', $ajax_url ) && edd_is_ajax_enabled() ) || edd_is_ssl_enforced() ) {
-		$uri = preg_replace( '/^http:/', 'https:', $uri );
-	}
-
-	if ( edd_get_option( 'no_cache_checkout', false ) ) {
-		$uri = edd_add_cache_busting( $uri );
-	}
-
-	return apply_filters( 'one_page_checkout_for_edd_get_checkout_uri', $uri );
-}
-add_filter( 'edd_get_checkout_uri', 'one_page_checkout_for_edd_get_checkout_uri', 15 );
-
-function one_page_checkout_for_edd_get_purchase_btn( $html ) {
-
-	$purchase_page = edd_get_option( 'purchase_page', '' );
-
-	global $post;
-
-	if ( $purchase_page == $post->ID ) {
-		return $html;
-	}
-
-	ob_start();
-
-	$enabled_gateways = edd_get_enabled_payment_gateways();
-	$cart_total       = edd_get_cart_total();
-
-	if ( ! empty( $enabled_gateways ) || empty( $cart_total ) ) {
-		$color = edd_get_option( 'checkout_color', 'blue' );
-		$color = ( $color == 'inherit' ) ? '' : $color;
-		$style = edd_get_option( 'button_style', 'button' );
-		$label = edd_get_checkout_button_purchase_label();
-
-		?>
-		<input type="submit" class="ss edd-submit <?php echo $color; ?> <?php echo $style; ?>" id="edd-purchase-button" name="edd-purchase" value="<?php echo $label; ?> SS"/>
-		<?php
-	}
-
-	return ob_get_clean();
-}
-function one_page_checkout_for_edd_get_purchase_btn_act_fn(){
-
-
-	add_filter('edd_checkout_button_purchase', 'one_page_checkout_for_edd_get_purchase_btn', 15 );
-}
-add_action('init', 'one_page_checkout_for_edd_get_purchase_btn_act_fn', 15);
-
-
-function one_page_checkout_for_edd_checkout_layout(){
-
-	
-	$checkout = do_shortcode('[download_checkout]');
-
-	return $checkout;
+	add_filter( 'edd_get_checkout_uri', 'one_page_checkout_for_edd_get_checkout_uri', 15 );
 }
 
-function one_page_checkout_for_edd_update_checkout_ajax(){
-	check_ajax_referer( 'one_page_checkout_for_edd_nonce', 'nonce' );
 
-	echo one_page_checkout_for_edd_checkout_layout();
+if ( !function_exists('one_page_checkout_for_edd_checkout_layout') ) {
 
-	die();
+	function one_page_checkout_for_edd_checkout_layout(){
+		$payment_mode = edd_get_chosen_gateway();
+		$form_action  = esc_url( edd_get_checkout_uri( 'payment-mode=' . $payment_mode ) );
+
+		ob_start();
+			echo '<div id="edd_checkout_wrap">';
+			if ( edd_get_cart_contents() || edd_cart_has_fees() ) :
+
+				edd_checkout_cart();
+
+				?>
+				<div class="cart_item edd_checkout"><a class="button" href="<?php echo edd_get_checkout_uri(); ?>"><?php _e( 'Checkout', 'easy-digital-downloads' ); ?></a></div>
+				<?php
+			
+			else:
+				/**
+				 * Fires off when there is nothing in the cart
+				 *
+				 * @since 1.0
+				 */
+				do_action( 'edd_cart_empty' );
+			endif;
+			echo '</div><!--end #edd_checkout_wrap-->';
+		return ob_get_clean();
+	}
+
+}
+
+if ( ! function_exists('one_page_checkout_for_edd_update_checkout_ajax') ) {
+	function one_page_checkout_for_edd_update_checkout_ajax(){
+		check_ajax_referer( 'one_page_checkout_for_edd_nonce', 'nonce' );
+
+		echo one_page_checkout_for_edd_checkout_layout();
+
+		die();
+	}
 }
 add_action( 'wp_ajax_one_page_checkout_for_edd_update_checkout', 'one_page_checkout_for_edd_update_checkout_ajax' );
 add_action( 'wp_ajax_nopriv_one_page_checkout_for_edd_update_checkout', 'one_page_checkout_for_edd_update_checkout_ajax' );
@@ -139,13 +132,6 @@ if ( ! function_exists('one_page_checkout_for_edd_svg_icon') ) {
 	}
 }
 
-/**
- * Determines if we're currently on the Checkout page
- */
-function one_page_checkout_for_edd_is_checkout() {
-	return true;
-}
-add_filter( 'edd_is_checkout', 'one_page_checkout_for_edd_is_checkout', 15 );
 
 /**
  * Cart Count function

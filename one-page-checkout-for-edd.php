@@ -23,15 +23,6 @@ include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 
 define( 'ONE_PAGE_CHECKOUT_FOR_EDD_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-/**
- *	General Functions
- */
-require_once( dirname( __FILE__ ) . '/inc/functions.php' );
-
-/**
- * Layout File
- */
-require_once( dirname( __FILE__ ) . '/inc/layout.php' );
 
 /**
  *	Plugin Main Class
@@ -53,6 +44,21 @@ if ( ! class_exists( 'OnePageCheckoutForEDD' ) ) :
 			// Added plugin action link
 			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'action_links' ) );
 
+			add_action( 'init', array( $this, 'includes' ) );
+
+			
+
+		}
+
+		/**
+		 * Includes required files
+		 */
+		public function includes(){
+			// General Functions
+			require_once( dirname( __FILE__ ) . '/inc/functions.php' );
+
+			// Layout File
+			require_once( dirname( __FILE__ ) . '/inc/layout.php' );
 		}
 
 		/**
@@ -60,7 +66,7 @@ if ( ! class_exists( 'OnePageCheckoutForEDD' ) ) :
 		 */
 		function action_links( $links ) {
 			$plugin_links = array(
-				'<a href="' . admin_url( 'admin.php?page=_eddnstant&tab=1' ) . '">' . esc_html__( 'Settings', 'eddnstant' ) . '</a>',
+				'<a href="' . admin_url( 'edit.php?post_type=download&page=_opcfedd' ) . '">' . esc_html__( 'Settings', 'eddnstant' ) . '</a>',
 			);
 			return array_merge( $plugin_links, $links );
 		}
