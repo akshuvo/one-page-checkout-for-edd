@@ -14,7 +14,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 One Page Checkout for EDD reduces the process of viewing cart items from the same page through a popup.
 
-# Description
+## Description
 
 One Page Checkout for EDD reduces the process of viewing cart items from the same page through a popup.
 
