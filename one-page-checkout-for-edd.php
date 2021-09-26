@@ -46,8 +46,6 @@ if ( ! class_exists( 'OnePageCheckoutForEDD' ) ) :
 
 			add_action( 'init', array( $this, 'includes' ) );
 
-			
-
 		}
 
 		/**
