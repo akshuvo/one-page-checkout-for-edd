@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: One Page Checkout for EDD
+ * Plugin Name: One Page Checkout Lite for EDD
  * Plugin URI: https://plugins.addonmaster.com/one-page-checkout-for-edd/
  * Bitbucket Plugin URI: https://github.com/akshuvo/one-page-checkout-for-edd
  * Description: Simply reduce the process of purchasing using One Page Checkout for Easy Digital Downloads. 
@@ -27,8 +27,8 @@ define( 'ONE_PAGE_CHECKOUT_FOR_EDD_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 /**
  *	Plugin Main Class
  */
-if ( ! class_exists( 'OnePageCheckoutForEDD' ) ) :
-	class OnePageCheckoutForEDD{
+if ( ! class_exists( 'OnePageCheckoutLiteForEDD' ) ) :
+	class OnePageCheckoutLiteForEDD{
 
 		/**
 		 * Constructor
@@ -155,21 +155,23 @@ endif;
 /**
  * EDD Plugin inactive Notice
  */
-function one_page_checkout_for_edd_inactive_notice_warn() {
-	?>
-	<div class="notice notice-warning is-dismissible">
-	    <p>
-	    	<strong><?php echo esc_html__( 'One Page Checkout For EDD requires Easy Digital Downloads to be activated ', 'one_page_checkout_for_edd' ); ?> <a href="<?php echo esc_url( admin_url('/plugin-install.php?s=slug:easy-digital-downloads&tab=search&type=term') ); ?>"><?php echo esc_html__('Install Now','one_page_checkout_for_edd'); ?></a></strong>
-	    </p>
-	</div>
-	<?php
+if ( !function_exists('one_page_checkout_for_edd_inactive_notice_warn') ) {
+	function one_page_checkout_for_edd_inactive_notice_warn() {
+		?>
+		<div class="notice notice-warning is-dismissible">
+		    <p>
+		    	<strong><?php echo esc_html__( 'One Page Checkout For EDD requires Easy Digital Downloads to be activated ', 'one_page_checkout_for_edd' ); ?> <a href="<?php echo esc_url( admin_url('/plugin-install.php?s=slug:easy-digital-downloads&tab=search&type=term') ); ?>"><?php echo esc_html__('Install Now','one_page_checkout_for_edd'); ?></a></strong>
+		    </p>
+		</div>
+		<?php
+	}
 }
 
 /**
 * Plugin Initialize if Easy Digital Downloads Plugin Exists
 */
 if ( class_exists( 'Easy_Digital_Downloads' ) ) {
-	new OnePageCheckoutForEDD();
+	new OnePageCheckoutLiteForEDD();
 } else {
 	add_action( 'admin_notices', 'one_page_checkout_for_edd_inactive_notice_warn' );
 }
